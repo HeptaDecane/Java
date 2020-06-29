@@ -1,2 +1,2 @@
 # Java
-Learning Java Concepts
+Java Concepts & HackerRank Java Introduction
