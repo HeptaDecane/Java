@@ -1,18 +1,18 @@
 # Class files
-*.class
-*/*.class
+	*.class
+	*/*.class
 
 # IntelliJ defaults
-# Default ignored files
-*/shelf/
-*/workspace.xml
-# Datasource local storage ignored files
-*/dataSources/
-*/dataSources.local.xml
-# Editor-based HTTP Client requests
-*/httpRequests/
+	# Default ignored files
+		*/shelf/
+		*/workspace.xml
+	# Datasource local storage ignored files
+		*/dataSources/
+		*/dataSources.local.xml
+	# Editor-based HTTP Client requests
+		*/httpRequests/
 
 # IntelliJ configs
-*/out/
-*/production/
-*/.idea/
+	*/out/
+	*/production/
+	*/.idea/
