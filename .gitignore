@@ -12,6 +12,6 @@
 		/httpRequests/
 
 # IntelliJ configs
-	out/
-	production/
-	.idea/
+	/out/
+	/production/
+	/.idea/
