@@ -1,5 +1,5 @@
 /*
-	https://www.hackerrank.com/challenges/java-loops-i/problem
+	https://www.hackerrank.com/challenges/java-loops-i
 */
 import java.util.Scanner;
 
@@ -8,7 +8,7 @@ public class Main{
 
 	public static void main(String[] args) {
 		int n = input.nextInt();
-		for(int i=1; i<=10; i++)
+		for(int i=1; i<=10; i++) 
 			System.out.println(n + " x " + i + " = " + n*i);
 	}
 }
