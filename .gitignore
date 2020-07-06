@@ -12,7 +12,7 @@
 	# Editor-based HTTP Client requests
 		*/httpRequests/
 
-# IntelliJ configs
+# IntelliJ configs 
 	*/out/
 	*/production/
 	*/.idea/
