@@ -1,5 +1,5 @@
 /*
-	https://www.hackerrank.com/challenges/java-substring/problem
+	https://www.hackerrank.com/challenges/java-substring
 */
 
 import java.util.Scanner;
