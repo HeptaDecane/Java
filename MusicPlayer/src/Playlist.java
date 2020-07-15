@@ -20,14 +20,15 @@ public class Playlist {
 // Methods
     public boolean play(){
         if(queue.isEmpty()){
-            System.out.println("Play List Empty!");
             return false;
         }
         index = iterator.nextIndex();
-        if(index<0||index>=queue.size())
-            return false;
         System.out.println("Playing: "+queue.get(index).getTitle());
         return true;
+    }
+
+    public void setName(String name){
+        this.name = name;
     }
 
     public boolean next(){
@@ -38,6 +39,7 @@ public class Playlist {
         if(iterator.hasNext()) {
             iterator.next();
             play();
+            return true;
         }
         return false;
     }
@@ -50,23 +52,49 @@ public class Playlist {
         return false;
     }
 
-    public Track getTrack(String title){
-        for(Track track:queue){
-            if(track.getTitle().equals(title))
-                return track;
-        }
-        return null;
-    }
-
     public boolean addTrack(Track track){
         if(track == null)
             return false;
         queue.add(track);
-        iterator = queue.listIterator();
+        goToStart();
         return true;
     }
 
-    public void showPlayList(){
+    public boolean addTrack(Track track,int index){
+        if(track == null)
+            return false;
+        if(index<0 || index>=queue.size())
+            return false;
+        queue.add(index,track);
+        goToStart();
+        return true;
+    }
+
+    public boolean removeTrack(String title){
+        goToStart();
+        while(iterator.hasNext()){
+            if(iterator.next().getTitle().equals(title)) {
+                iterator.remove();
+                goToStart();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean removeTrack(int index){
+        if(index<0 || index>=queue.size())
+            return false;
+        queue.remove(index);
+        goToStart();
+        return true;
+    }
+
+
+    public boolean showPlayList(){
+        if(queue.isEmpty())
+            return false;
+        System.out.println("\n------------------PLAYLIST: "+name+"------------------");
         int i=0;
         DecimalFormat sr = new DecimalFormat("00. ");
         for(Track track:queue){
@@ -76,6 +104,15 @@ public class Playlist {
                 System.out.println(sr.format(i+1)+track);
             i++;
         }
+        System.out.println("----------------------------------------------------\n");
+        return true;
+    }
+    public void delete(){
+        queue.clear();
+    }
+    public void goToStart(){
+        iterator = queue.listIterator();
+        index = -1;
     }
 
 }

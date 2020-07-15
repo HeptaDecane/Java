@@ -61,13 +61,15 @@ public class Store {
         tracks.add(track);
     }
 
-    public void showStore(){
+    public void showTracks(){
         int i=0;
+        System.out.println("------------------------STORE------------------------");
         for(Track track:tracks){
             i++;
             DecimalFormat sr = new DecimalFormat("000. ");
             System.out.println(sr.format(i)+track.toString());
         }
+        System.out.println("----------------------------------------------------\n");
     }
 
 
