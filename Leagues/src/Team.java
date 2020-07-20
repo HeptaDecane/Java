@@ -19,6 +19,15 @@ public class Team<E extends Player> implements Comparable<Team<E>>{
     public String getName(){
         return name;
     }
+    public int getMatches(){
+        return matches;
+    }
+    public int getWins(){
+        return wins;
+    }
+    public int getTies(){
+        return ties;
+    }
 
     public boolean addPlayer(E newPlayer){
         if(players.contains(newPlayer))
@@ -48,10 +57,15 @@ public class Team<E extends Player> implements Comparable<Team<E>>{
     public int compareTo(Team<E> second) {
         Team<E> first = this;
         if(first.score()>second.score())
-            return 1;
-        else if(first.score()<second.score())
             return -1;
+        else if(first.score()<second.score())
+            return 1;
         else
             return 0;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
