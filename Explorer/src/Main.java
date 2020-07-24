@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -6,36 +7,44 @@ public class Main {
     private static Scanner input = new Scanner(System.in);
     private static Map<Integer,Location> map;
     private static Map<String,String> vocab;
+    private static Map<String,Integer> exits;
 
     static {
         map = new HashMap<>();
         vocab = new HashMap<>();
-        Location home = new Location(0,"Quit()");
+
+        exits = new LinkedHashMap<>();
+        Location home = new Location(0,"Quit()",exits);
         map.put(0,home);
 
-        Location road = new Location(1,"Road");
-        road.addExit("N",5);
-        road.addExit("S",4);
-        road.addExit("E",3);
-        road.addExit("W",2);
+        exits = new LinkedHashMap<>();
+        exits.put("N",5);
+        exits.put("S",4);
+        exits.put("E",3);
+        exits.put("W",2);
+        Location road = new Location(1,"Road",exits);
         map.put(1,road);
 
-        Location hill = new Location(2,"Hill");
-        hill.addExit("E",5);
+        exits = new LinkedHashMap<>();
+        exits.put("E",5);
+        Location hill = new Location(2,"Hill",exits);
         map.put(2,hill);
 
-        Location building = new Location(3,"Building");
-        building.addExit("W",1);
+        exits = new LinkedHashMap<>();
+        exits.put("W",1);
+        Location building = new Location(3,"Building",exits);
         map.put(3,building);
 
-        Location valley = new Location(4,"Valley");
-        valley.addExit("N",1);
-        valley.addExit("W",2);
+        exits = new LinkedHashMap<>();
+        exits.put("N",1);
+        exits.put("W",2);
+        Location valley = new Location(4,"Valley",exits);
         map.put(4,valley);
 
-        Location forest = new Location(5,"Forest");
-        forest.addExit("W",2);
-        forest.addExit("S",1);
+        exits = new LinkedHashMap<>();
+        exits.put("W",2);
+        exits.put("S",1);
+        Location forest = new Location(5,"Forest",exits);
         map.put(5,forest);
 
         vocab.put("QUIT","Q");

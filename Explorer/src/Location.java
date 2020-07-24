@@ -3,16 +3,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Location {
+public final class Location {
     private final int locationID;
     private final String description;
     private final Map<String,Integer> exits;
 
-    public Location(int locationID,String description){
+    public Location(int locationID,String description,Map<String,Integer> exits){
         this.locationID = locationID;
         this.description = description;
-        exits = new LinkedHashMap<>();
-        exits.put("Q",0);
+        this.exits = new LinkedHashMap<>(exits);
+        this.exits.put("Q",0);
     }
 
     public void addExit(String direction,int location){
