@@ -19,7 +19,7 @@ public class Solution {
 // Start Code
 
 /*
-	https://www.hackerrank.com/challenges/java-hashset/problem
+	https://www.hackerrank.com/challenges/java-hashset
 */
 
 		Set<String> names = new HashSet<>();
