@@ -29,6 +29,10 @@ public abstract class CelestialObject {
         return key.name+" "+key.category+" : "+orbitalPeriod+" Days";
     }
 
+    public Key getKey(){
+        return key;
+    }
+
     @Override
     public int hashCode() {
         return key.hashCode();
@@ -47,7 +51,7 @@ public abstract class CelestialObject {
     }
 
     public static enum Category{
-        STAR,PLANET,MOON,COMET,ASTEROID
+        STAR,PLANET,MOON,COMET,ASTEROID,METEORS
     }
 
     public static final class Key{
@@ -57,6 +61,10 @@ public abstract class CelestialObject {
         private Key(String name,Category category){
             this.name = name;
             this.category = category;
+        }
+
+        public Category getCategory(){
+            return category;
         }
 
         @Override
