@@ -26,7 +26,7 @@ public abstract class CelestialObject {
 
     @Override
     public String toString() {
-        return key.name+" "+key.category+" : "+orbitalPeriod+" Days";
+        return String.format("%-10s%-15s%.3f Days",key.category,key.name,orbitalPeriod);
     }
 
     public Key getKey(){
@@ -51,7 +51,7 @@ public abstract class CelestialObject {
     }
 
     public static enum Category{
-        STAR,PLANET,MOON,COMET,ASTEROID,METEORS
+        GALAXY,STAR,PLANET,MOON,COMET,ASTEROID,METEORS
     }
 
     public static final class Key{
