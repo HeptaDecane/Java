@@ -34,12 +34,12 @@ public abstract class CelestialObject {
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return key.hashCode();
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         if(this == obj)
             return true;
         if(obj instanceof CelestialObject){
