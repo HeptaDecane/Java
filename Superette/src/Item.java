@@ -19,9 +19,12 @@ public class Item implements Comparable<Item> {
     public double getPrice(){
         return price;
     }
+    public int getStock(){
+        return stock;
+    }
 
     public int updateStock(int quantity){
-        if(quantity+stock >= 0) {
+        if(quantity+stock-reserved >= 0) {
             stock += quantity;
             return stock;
         }
@@ -56,8 +59,8 @@ public class Item implements Comparable<Item> {
         return false;
     }
 
-    public void available(){
-        System.out.println(stock-reserved);
+    public String status(){
+        return reserved+" of "+stock+" booked";
     }
 
     @Override
@@ -85,6 +88,6 @@ public class Item implements Comparable<Item> {
 
     @Override
     public String toString() {
-        return this.name+"  @ "+this.price+"$";
+        return String.format("%-10s  @ %.2f$",name,price);
     }
 }
