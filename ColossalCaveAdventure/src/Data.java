@@ -5,10 +5,12 @@ import java.util.Map;
 import java.util.Scanner;
 
 public final class Data {
-    public static Map<Integer,Location> read(){
+    public static Map<Integer,Location> readMap(){
+        System.out.print("Loading Map...");
+
         Map<Integer,Location> map = new LinkedHashMap<>();
         Map<String,Integer> exits = new HashMap<>();
-
+        // Reading Locations
         try(
             FileReader file = new FileReader("locations.txt");
             BufferedReader buffer = new BufferedReader(file);
@@ -24,7 +26,7 @@ public final class Data {
         }catch(Exception e){
             System.out.println(e);
         }
-
+        // Reading Exits
         try(
             FileReader file = new FileReader("exits.txt");
             BufferedReader buffer = new BufferedReader(file);
@@ -43,21 +45,39 @@ public final class Data {
             System.out.println(e);
         }
 
-//        for(Location location:map.values()){
-//            System.out.println(location.getLocationID()+" | "+location.getDescription());
-//            exits = location.getExits();
-//            for(String key:exits.keySet())
-//                System.out.println("\t"+key+" "+exits.get(key));
-//            System.out.println();
-//        }
-
-        System.out.println("Map Loading Completed...");
+        System.out.println("SUCCESS");
         return map;
     }
-    public static void write(){
-        try(BufferedWriter file = new BufferedWriter(new FileWriter("testFile.txt"))) {
-        }catch (IOException e){
-            e.printStackTrace();
+
+    public static int readProgress(){
+        System.out.print("Loading Progress...");
+
+        int currentLocationID = 1;
+        try(
+            FileReader file = new FileReader("progress.txt");
+            Scanner scanner = new Scanner(file);
+        ){
+            currentLocationID = scanner.nextInt();
+        }catch (Exception e){
+            System.out.println(e);
+            currentLocationID = 1;
         }
+
+        System.out.println("SUCCESS");
+        return currentLocationID;
     }
+
+    public static void writeProgress(int locationID){
+        System.out.print("Saving Progress...");
+        try(
+            FileWriter file = new FileWriter("progress.txt");
+            BufferedWriter buffer = new BufferedWriter(file);
+        ) {
+            buffer.write(Integer.toString(locationID));
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        System.out.println("SUCCESS");
+    }
+
 }

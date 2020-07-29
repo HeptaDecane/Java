@@ -1,5 +1,4 @@
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class Location {
@@ -27,6 +26,6 @@ public final class Location {
     }
 
     public Map<String, Integer> getExits() {
-        return new LinkedHashMap<>(exits);
+        return new HashMap<>(exits);
     }
 }
