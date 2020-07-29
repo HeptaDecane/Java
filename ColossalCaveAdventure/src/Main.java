@@ -1,5 +1,4 @@
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -7,51 +6,19 @@ public class Main {
     private static Scanner input = new Scanner(System.in);
     private static Map<Integer,Location> map;
     private static Map<String,String> vocab;
-    private static Map<String,Integer> exits;
 
     static {
-        map = new HashMap<>();
+        map = Data.read();
         vocab = new HashMap<>();
 
-        exits = new LinkedHashMap<>();
-        Location home = new Location(0,"Quit()",exits);
-        map.put(0,home);
 
-        exits = new LinkedHashMap<>();
-        exits.put("N",5);
-        exits.put("S",4);
-        exits.put("E",3);
-        exits.put("W",2);
-        Location road = new Location(1,"Road",exits);
-        map.put(1,road);
-
-        exits = new LinkedHashMap<>();
-        exits.put("E",5);
-        Location hill = new Location(2,"Hill",exits);
-        map.put(2,hill);
-
-        exits = new LinkedHashMap<>();
-        exits.put("W",1);
-        Location building = new Location(3,"Building",exits);
-        map.put(3,building);
-
-        exits = new LinkedHashMap<>();
-        exits.put("N",1);
-        exits.put("W",2);
-        Location valley = new Location(4,"Valley",exits);
-        map.put(4,valley);
-
-        exits = new LinkedHashMap<>();
-        exits.put("W",2);
-        exits.put("S",1);
-        Location forest = new Location(5,"Forest",exits);
-        map.put(5,forest);
 
         vocab.put("QUIT","Q");
         vocab.put("NORTH","N");
         vocab.put("SOUTH","S");
         vocab.put("EAST","E");
         vocab.put("WEST","W");
+
     }
 
     public static String  parseInput(){
@@ -75,7 +42,7 @@ public class Main {
                 System.out.println(map.get(locationID).getDescription());
                 break;
             }
-            System.out.println("You've reached "+map.get(locationID).getDescription());
+            System.out.println(map.get(locationID).getDescription());
 
             Map<String,Integer> currentExits = map.get(locationID).getExits();
             System.out.print("Available Exits: ");
