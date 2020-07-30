@@ -43,7 +43,6 @@ public class Main {
         return phrase;
     }
 
-
     public static void main(String[] args) {
         int currentLocationID;
         while(true){
@@ -85,4 +84,5 @@ public class Main {
             }
         }
     }
+
 }
