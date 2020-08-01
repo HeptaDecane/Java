@@ -6,7 +6,10 @@ public final class Location implements Serializable {
     private final int locationID;
     private final String description;
     private final Map<String,Integer> exits;
-    private long serialVersionUID = 0;
+
+    public Location(int locationID,String description){
+        this(locationID,description,new HashMap<>());
+    }
 
     public Location(int locationID,String description,Map<String,Integer> exits){
         this.locationID = locationID;

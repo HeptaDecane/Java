@@ -3,13 +3,11 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
-    private static Scanner input = new Scanner(System.in);
-    private static Map<Integer,Location> map;
-    private static Map<String,String> vocab;
-    private static int newLocationID;
+    private static final Scanner input = new Scanner(System.in);
+    private static final Map<String,String> vocab;
+    private static Location newLocation;
 
     static {
-        map = Data.readMap();
 
         System.out.print("Loading Vocabulary...");
         vocab = new HashMap<>();
@@ -26,11 +24,11 @@ public class Main {
         vocab.put("SOUTH-WEST","SW");
         System.out.println("SUCCESS");
 
-        newLocationID = Data.readProgress();
+        int progress = Data.readProgress();
+        newLocation = Data.getLocation(progress);
 
         System.out.println("\nWelcome to COLOSSAL CAVE ADVENTURE\n");
 
-        Data.initialConversion(map);
     }
 
     public static String parseInput(){
@@ -45,13 +43,13 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int currentLocationID;
+        Location currentLocation;
         while(true){
 
-            currentLocationID = newLocationID;
-            System.out.println(map.get(currentLocationID).getDescription());
+            currentLocation = newLocation;
+            System.out.println(currentLocation.getDescription());
 
-            Map<String,Integer> currentExits = map.get(currentLocationID).getExits();
+            Map<String,Integer> currentExits = currentLocation.getExits();
             System.out.print("Available Exits: ");
             for(String exit:currentExits.keySet()){
                 if(exit.equals("Q"))
@@ -62,7 +60,9 @@ public class Main {
 
             String direction = parseInput();
             if(currentExits.containsKey(direction)) {
-                newLocationID = currentExits.get(direction);
+                int newLocationID = currentExits.get(direction);
+                newLocation = Data.getLocation(newLocationID);
+
                 for(String key:vocab.keySet()){
                     if(direction.equals(vocab.get(key))){
                         if(key.equals("UP") || key.equals("DOWN"))
@@ -78,9 +78,9 @@ public class Main {
             else
                 System.out.println("No Exits in that direction\n");
 
-            if(newLocationID == 0){
-                Data.writeProgress(currentLocationID);
-                System.out.println(map.get(newLocationID).getDescription());
+            if(newLocation.getLocationID() == 0){
+                Data.writeProgress(currentLocation.getLocationID());
+                System.out.println(newLocation.getDescription());
                 break;
             }
         }

@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public final class Data {
     private static class Index{
@@ -14,54 +15,66 @@ public final class Data {
     }
     private static Map<Integer,Index> index = new LinkedHashMap<>();
 
-    public static Map<Integer,Location> readMap(){
-        System.out.print("Loading Map.");
+    static {
+        // Load Indices into memory
+        try(RandomAccessFile file = new RandomAccessFile("record.dat","rwd")){
+            int n = file.readInt();     // No. of locations
+            int locationStart = file.readInt();
+            while(file.getFilePointer()<locationStart){
+                int locationID = file.readInt();
+                int start = file.readInt();
+                int length = file.readInt();
 
-        Map<Integer,Location> map = new LinkedHashMap<>();
-
-        try(
-            FileInputStream file = new FileInputStream("map.dat");
-            BufferedInputStream buffer = new BufferedInputStream(file);
-            ObjectInputStream iStream = new ObjectInputStream(buffer)
-        ){
-            while (true){
-                Location location = (Location) iStream.readObject();
-                map.put(location.getLocationID(),location);
+                Index record = new Index(start,length);
+                index.put(locationID,record);
             }
-        }catch (EOFException e){
-            System.out.print("..");
-        }
-        catch (Exception e){
+        }catch (Exception e){
             System.out.println(e);
         }
-        System.out.println("SUCCESS");
-
-        return map;
     }
+
+    public static Location getLocation(int locationID){
+        try(RandomAccessFile file = new RandomAccessFile("record.dat","rwd")){
+            Index record = index.get(locationID);
+            file.seek(record.start);
+
+            locationID = file.readInt();
+            String description = file.readUTF();
+            Location location = new Location(locationID,description);
+
+            String str = file.readUTF();
+            String[] exits = str.split(",");
+            for(int i=0;i<exits.length;i+=2){
+                String direction = exits[i];
+                int exitsTo = Integer.parseInt(exits[i+1]);
+                location.addExit(direction,exitsTo);
+            }
+            return location;
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        // If can't retrieve requested location
+        return getLocation(0);
+    }
+
 
     public static int readProgress(){
         System.out.print("Loading Progress...");
-
         int currentLocationID = 1;
-        try(
-            FileInputStream file = new FileInputStream("progress.dat");
-            DataInputStream iStream = new DataInputStream(file)
-        ){
-            currentLocationID = iStream.readInt();
+        try(Scanner scanner = new Scanner(new FileReader("progress.txt"))){
+            currentLocationID = scanner.nextInt();
         }catch (Exception e){
             System.out.println(e);
         }
         System.out.println("SUCCESS");
+
         return currentLocationID;
     }
 
     public static void writeProgress(int locationID){
         System.out.print("Saving Progress...");
-        try(
-            FileOutputStream file = new FileOutputStream("progress.dat");
-            DataOutputStream oStream = new DataOutputStream(file)
-        ) {
-            oStream.writeInt(locationID);
+        try(FileWriter file = new FileWriter("progress.txt")) {
+            file.write(Integer.toString(locationID));
         }catch(Exception e){
             System.out.println(e);
         }
@@ -77,9 +90,9 @@ public final class Data {
             /*
                 indexSize: Bytes required to store indices
                 file.getFilePointer(): current file pointer;
-                Integer.BYTES: Bytes required to write location Start (line 82)
+                Integer.BYTES: Bytes required to write location Start (line#)
              */
-            file.writeInt(locationStart);
+            file.writeInt(locationStart);       // line#
 
             int indexStart = (int)file.getFilePointer();
 
