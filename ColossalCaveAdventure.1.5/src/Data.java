@@ -9,34 +9,23 @@ import java.util.Scanner;
 public final class Data {
 
     public static Map<Integer,Location> readMap(){
-        System.out.print("Loading Map...");
+        System.out.print("Loading Map.");
 
         Map<Integer,Location> map = new LinkedHashMap<>();
-        Path locationsFile = FileSystems.getDefault().getPath("locations.txt");
-        Path exitsFile = FileSystems.getDefault().getPath("exits.txt");
+        Path path =  FileSystems.getDefault().getPath("map.dat");
 
-        try(Scanner scanner = new Scanner(Files.newBufferedReader(locationsFile))){
-            scanner.useDelimiter(",");
-            while (scanner.hasNextLine()){
-                int locationID = scanner.nextInt();
-                scanner.skip(",");
-                String description = scanner.nextLine();
-                map.put(locationID,new Location(locationID,description));
+        try(
+            InputStream file = Files.newInputStream(path);
+            BufferedInputStream buffer = new BufferedInputStream(file);
+            ObjectInputStream iStream = new ObjectInputStream(buffer)
+        ){
+            while(true){
+                Location location = (Location) iStream.readObject();
+                map.put(location.getLocationID(),location);
             }
+        }catch (EOFException e){
+            System.out.print("..");
         }catch (Exception e){
-            System.out.println(e);
-        }
-
-        try(Scanner scanner = new Scanner(Files.newBufferedReader(exitsFile))){
-            while(scanner.hasNextLine()){
-                String str = scanner.nextLine();
-                String[] data = str.split(",");
-                int locationID = Integer.parseInt(data[0]);
-                String direction = data[1];
-                int exitsTo = Integer.parseInt(data[2]);
-                map.get(locationID).addExit(direction,exitsTo);
-            }
-        } catch (Exception e){
             System.out.println(e);
         }
         System.out.println("SUCCESS");
@@ -70,25 +59,14 @@ public final class Data {
     }
 
     public static void initialConversion(Map<Integer,Location> map){
-        Path locationsFile = FileSystems.getDefault().getPath("locations.txt");
-        Path exitsFile = FileSystems.getDefault().getPath("exits.txt");
+        Path path = FileSystems.getDefault().getPath("map.dat");
         try(
-            BufferedWriter locationsBuffer = Files.newBufferedWriter(locationsFile);
-            BufferedWriter exitsBuffer = Files.newBufferedWriter(exitsFile)
+            OutputStream file = Files.newOutputStream(path);
+            BufferedOutputStream buffer = new BufferedOutputStream(file);
+            ObjectOutputStream oStream = new ObjectOutputStream(buffer);
         ){
-            for(Location location: map.values()) {
-                locationsBuffer.write(location.getLocationID()+ "," );
-                locationsBuffer.write(location.getDescription() + "\n");
-
-                for(String direction:location.getExits().keySet()){
-                    if(direction.equals("Q"))
-                        continue;
-                    exitsBuffer.write(location.getLocationID()+",");
-                    exitsBuffer.write(direction+",");
-                    exitsBuffer.write(location.getExits().get(direction)+"\n");
-
-                }
-            }
+            for(Location location:map.values())
+                oStream.writeObject(location);
         }catch (Exception e){
             System.out.println(e);
         }
