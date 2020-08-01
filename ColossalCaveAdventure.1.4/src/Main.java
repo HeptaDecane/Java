@@ -29,7 +29,7 @@ public class Main {
         newLocationID = Data.readProgress();
 
         System.out.println("\nWelcome to COLOSSAL CAVE ADVENTURE\n");
-        Data.initialConversion(map);
+//        Data.initialConversion(map);
     }
 
     public static String parseInput(){
