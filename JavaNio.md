@@ -68,6 +68,6 @@ try{
 	Files.delete(path);				// default delete
 	Files.deleteIfExists(path);		// look before you leap
 }catch(IOException e){
-	System.out.println(e);
+	System.out.println(e); 
 }
 ```
