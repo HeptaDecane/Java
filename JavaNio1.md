@@ -72,5 +72,9 @@ try{
 }
 ```
 
+| Tables        | Are           | Cool  |
+| ------------- |---------------| ------|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
 
-![Desc](https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Java_programming_language_logo.svg/141px-Java_programming_language_logo.svg.png)
