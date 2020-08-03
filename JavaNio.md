@@ -18,8 +18,8 @@ Path path = Paths.get("dir/data.txt");
 
 ```java
 // sets path to file(data.txt) outside the current working directory using absolute path
-Path path = Paths.get("home","near","data.txt");
-path path = Paths.get("/home/near/data.txt");
+Path path = Paths.get("home","user","data.txt");
+path path = Paths.get("/home/user/data.txt");
 ```
 
 ## Files.copy( )
