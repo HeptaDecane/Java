@@ -1,5 +1,4 @@
 ﻿# Java NIO
-
 ```java
 import java.nio.file.*;		//JDK 7+
 ```
@@ -9,18 +8,19 @@ import java.nio.file.*;		//JDK 7+
 // sets path to file(data.txt) in current working directory`
 Path path = Paths.get("data.txt");
 ```
-
 ```java
 // sets the path to file(data.txt) within directory(dir) in current working directory
 Path path = Paths.get("dir","data.txt");
 Path path = Paths.get("dir/data.txt");
 ```
-
 ```java
 // sets path to file(data.txt) outside the current working directory using absolute path
 Path path = Paths.get("home","user","data.txt");
 path path = Paths.get("/home/user/data.txt");
 ```
+## [java.nio.file.Files](https://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html)
+>This class consists exclusively of static methods that operate on files, directories, or other types of files. 
+>In most cases, the methods defined here will delegate to the associated file system provider to perform the file operations.
 
 ## Files.copy( )
 ```java
@@ -40,6 +40,7 @@ try{
 	System.out.println(e)
 }
 ```
+
 ## Files.move( )
 ```java
 Path source = Paths.get("to","source","file");
@@ -69,5 +70,49 @@ try{
 	Files.deleteIfExists(path);		// look before you leap
 }catch(IOException e){
 	System.out.println(e); 
+}
+```
+
+## Reading Directory Contents
+
+```java
+Path path = Paths.get("to","target","directory");  
+try(DirectoryStream<Path> contents = Files.newDirectoryStream(path)){  
+    for(Path file:contents)  
+        System.out.println(file.getFileName());  
+}catch(IOException|DirectoryIteratorException e){  
+    System.out.println(e);  
+}
+```
+### Filters
+- [Using Glob](https://javapapers.com/java/glob-with-java-nio/)
+```java
+Path path = Paths.get("to","target","directory");  
+try(DirectoryStream<Path> contents = Files.newDirectoryStream(path,"glob_pattern")){  
+    for(Path file:contents)  
+        System.out.println(file.getFileName());  
+}catch(IOException|DirectoryIteratorException e){  
+    System.out.println(e);  
+}
+```
+- Using DirectoryStream.Filter
+```java
+Path path = Paths.get("to","target","directory");  
+
+DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {  
+	@Override  
+	public boolean accept(Path entry) throws IOException {  
+		if("conditon on {entry}")
+			return true;
+		else
+			return false;	 
+	}  
+};
+
+try(DirectoryStream<Path> contents = Files.newDirectoryStream(path,filter)){  
+    for(Path file:contents)  
+        System.out.println(file.getFileName());  
+}catch(IOException|DirectoryIteratorException e){  
+    System.out.println(e);  
 }
 ```
