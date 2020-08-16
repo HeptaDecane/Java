@@ -20,8 +20,11 @@ public class Producer implements Runnable {
             System.out.println(color+"Adding "+product);
             try {
                 queue.lock();
-                buffer.add(product);
-                queue.unlock();
+                try {
+                    buffer.add(product);
+                } finally {
+                    queue.unlock();
+                }
                 Thread.sleep(new Random().nextInt(2000));
             }catch (InterruptedException e){
                 System.out.println(e);
@@ -29,7 +32,10 @@ public class Producer implements Runnable {
         }
         System.out.println("Adding EOF");
         queue.lock();
-        buffer.add("EOF");
-        queue.unlock();
+        try {
+            buffer.add("EOF");
+        } finally {
+            queue.unlock();
+        }
     }
 }

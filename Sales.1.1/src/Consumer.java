@@ -16,17 +16,19 @@ public class Consumer implements Runnable {
     public void run(){
         while (true){
             queue.lock();
-            if (buffer.isEmpty()) {
+            try{
+                if (buffer.isEmpty())
+                    continue;
+                if (buffer.get(0).equals("EOF")) {
+                    System.out.println(color + "Exiting...");
+                    break;
+                }
+                else
+                    System.out.println(color + "Removed " + buffer.remove(0));
+
+            } finally{
                 queue.unlock();
-                continue;
             }
-            if (buffer.get(0).equals("EOF")) {
-                System.out.println(color + "Exiting...");
-                queue.unlock();
-                break;
-            } else
-                System.out.println(color + "Removed " + buffer.remove(0));
-            queue.unlock();
         }
     }
 
