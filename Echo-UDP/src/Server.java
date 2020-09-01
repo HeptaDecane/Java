@@ -17,15 +17,13 @@ public class Server {
                 int port = packet.getPort();
 
                 String message = new String(inData,0,packet.getLength());
-                System.out.println("client: "+message);
+                System.out.println("client@"+port+": "+message);
 
                 if(message.equalsIgnoreCase("exit")){
                     String response = "connection closed.";
-                    System.out.println(response);
                     outData = response.getBytes();
                     packet = new DatagramPacket(outData,outData.length,address,port);
                     socket.send(packet);
-                    break;
                 }
             }
 
