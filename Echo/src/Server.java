@@ -21,7 +21,7 @@ public class Server {
                 }
             }
 
-        }catch (Exception e){
+        } catch (Exception e){
             System.out.println("error: "+e.getMessage());
         }
     }
