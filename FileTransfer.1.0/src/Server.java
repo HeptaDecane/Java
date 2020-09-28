@@ -14,12 +14,12 @@ public class Server {
             DataInputStream dataInputStream = new DataInputStream(clientSocket.getInputStream());
             DataOutputStream dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
 
-            byte[] bytes = new byte[64*1024];
-            int n = dataInputStream.read(bytes,0,bytes.length);
-            FileOutputStream fileOutputStream = new FileOutputStream("demo.pdf");
-            fileOutputStream.write(bytes,0,n);
-            System.out.println(n);
-            fileOutputStream.close();
+            byte[] buffer = new byte[64*1024];      // socket limit
+            int bytes = dataInputStream.read(buffer,0,buffer.length);
+            FileOutputStream fileOutputStream = new FileOutputStream("NewFile.pdf");
+            fileOutputStream.write(buffer,0,bytes);
+
+            System.out.println("Bytes Received: "+ bytes);
 
         } catch (Exception e){
             e.printStackTrace();

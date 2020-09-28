@@ -10,11 +10,12 @@ public class Client {
             DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
             DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
-            byte[] bytes = new byte[64*1024];
-            FileInputStream fileInputStream = new FileInputStream("/path/to/file.pdf");
-            int n = fileInputStream.read(bytes,0,bytes.length);
-            dataOutputStream.write(bytes,0,n);
-            System.out.println(n);
+            FileInputStream fileInputStream = new FileInputStream("path/to/File.pdf");
+            byte[] buffer = new byte[64*1024];      // socket limit
+            int bytes = fileInputStream.read(buffer,0,buffer.length);
+            dataOutputStream.write(buffer,0,bytes);
+
+            System.out.println("Bytes Sent: " + bytes);
 
         }catch (Exception e){
             e.printStackTrace();
