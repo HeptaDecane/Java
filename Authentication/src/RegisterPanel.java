@@ -1,25 +1,23 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.regex.Pattern;
 
 
 public class RegisterPanel extends JPanel {
-    private JPasswordField password;
-    private JPasswordField password1;
+    private JPasswordField passwordField;
+    private JPasswordField passwordField1;
     private JLabel lblNewLabel;
     private JLabel lblPassword;
-    private JFormattedTextField username;
+    private JFormattedTextField usernameField;
     private JButton signUp;
     private JButton signIn;
     private JLabel message;
     private JLabel lblName;
-    private JFormattedTextField firstName;
+    private JFormattedTextField firstNameField;
     private JLabel lblLastName;
     private JLabel lblConfirmPassword;
-    private JFormattedTextField lastName;
+    private JFormattedTextField lastNameField;
 
-    /**
-     * Create the panel.
-     */
     public RegisterPanel() {
         setForeground(Color.YELLOW);
         setLayout(null);
@@ -38,15 +36,15 @@ public class RegisterPanel extends JPanel {
         lblPassword.setBounds(12, 194, 113, 37);
         add(lblPassword);
 
-        username = new JFormattedTextField();
-        username.setFont(new Font("Ubuntu Mono", Font.PLAIN, 20));
-        username.setBounds(12, 30, 300, 37);
-        add(username);
+        usernameField = new JFormattedTextField();
+        usernameField.setFont(new Font("Ubuntu Mono", Font.PLAIN, 20));
+        usernameField.setBounds(12, 30, 300, 37);
+        add(usernameField);
 
-        password = new JPasswordField();
-        password.setFont(new Font("Ubuntu Mono", Font.PLAIN, 20));
-        password.setBounds(12, 225, 300, 37);
-        add(password);
+        passwordField = new JPasswordField();
+        passwordField.setFont(new Font("Ubuntu Mono", Font.PLAIN, 20));
+        passwordField.setBounds(12, 225, 300, 37);
+        add(passwordField);
 
         signUp = new JButton("Sign Up");
         signUp.setFont(new Font("Ubuntu Mono", Font.BOLD, 18));
@@ -58,7 +56,7 @@ public class RegisterPanel extends JPanel {
         signIn.setBounds(95, 440, 113, 37);
         add(signIn);
 
-        message = new JLabel("Message");
+        message = new JLabel("");
         message.setForeground(Color.LIGHT_GRAY);
         message.setHorizontalAlignment(SwingConstants.CENTER);
         message.setFont(new Font("Ubuntu Mono", Font.BOLD, 20));
@@ -70,10 +68,10 @@ public class RegisterPanel extends JPanel {
         lblName.setBounds(12, 63, 113, 37);
         add(lblName);
 
-        firstName = new JFormattedTextField();
-        firstName.setFont(new Font("Ubuntu Mono", Font.PLAIN, 20));
-        firstName.setBounds(12, 94, 300, 37);
-        add(firstName);
+        firstNameField = new JFormattedTextField();
+        firstNameField.setFont(new Font("Ubuntu Mono", Font.PLAIN, 20));
+        firstNameField.setBounds(12, 94, 300, 37);
+        add(firstNameField);
 
         lblLastName = new JLabel("Last Name:");
         lblLastName.setFont(new Font("Ubuntu Mono", Font.BOLD, 20));
@@ -85,15 +83,15 @@ public class RegisterPanel extends JPanel {
         lblConfirmPassword.setBounds(12, 262, 196, 37);
         add(lblConfirmPassword);
 
-        password1 = new JPasswordField();
-        password1.setFont(new Font("Ubuntu Mono", Font.PLAIN, 20));
-        password1.setBounds(12, 293, 300, 37);
-        add(password1);
+        passwordField1 = new JPasswordField();
+        passwordField1.setFont(new Font("Ubuntu Mono", Font.PLAIN, 20));
+        passwordField1.setBounds(12, 293, 300, 37);
+        add(passwordField1);
 
-        lastName = new JFormattedTextField();
-        lastName.setFont(new Font("Ubuntu Mono", Font.PLAIN, 20));
-        lastName.setBounds(12, 158, 300, 37);
-        add(lastName);
+        lastNameField = new JFormattedTextField();
+        lastNameField.setFont(new Font("Ubuntu Mono", Font.PLAIN, 20));
+        lastNameField.setBounds(12, 158, 300, 37);
+        add(lastNameField);
     }
 
     public void addActionListeners(){
@@ -103,6 +101,51 @@ public class RegisterPanel extends JPanel {
             Main.frame.setContentPane(new LoginPanel());
             Main.frame.setVisible(true);
         });
+
+        signUp.addActionListener(e -> {
+            String username = usernameField.getText();
+            String firstName = firstNameField.getText();
+            String lastName = lastNameField.getText();
+            String password = String.valueOf(passwordField.getPassword());
+            String password1 = String.valueOf(passwordField1.getPassword());
+            if(isValidEntry().length() == 0){
+                String name = firstName+" "+lastName;
+                User user = new User(username,password,name);
+                if(Main.addNewUser(user)){
+                    Main.saveUsers();
+                    Main.frame.setTitle("Home");
+                    Main.frame.getContentPane().removeAll();
+                    Main.frame.setContentPane(new HomePage(user));
+                    Main.frame.setVisible(true);
+                }else {
+                    message.setText("Username Exists");
+                }
+            }
+            else {
+                message.setText("Invalid:"+isValidEntry());
+            }
+
+        });
+    }
+
+    public String isValidEntry(){
+        String username = usernameField.getText();
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String password = String.valueOf(passwordField.getPassword());
+        String password1 = String.valueOf(passwordField1.getPassword());
+        String error = "";
+
+        if(!Pattern.matches("[a-zA-Z0-9]{4,16}",username))
+            error = " Username";
+        if(!Pattern.matches("[a-zA-Z]+",firstName))
+            error += " FirstName";
+        if(!Pattern.matches("[a-zA-Z]+",lastName))
+            error += " LastName";
+        if (!password.equals(password1) || password.length()<8)
+            error += " Password";
+
+        return error;
     }
 
 }

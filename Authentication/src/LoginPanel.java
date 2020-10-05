@@ -2,19 +2,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
 
 public class LoginPanel extends JPanel {
-    private JPasswordField password;
+    private JPasswordField passwordField;
     private JLabel lblNewLabel;
     private JLabel lblPassword;
-    private JFormattedTextField username;
+    private JFormattedTextField usernameField;
     private JButton signUp;
     private JButton signIn;
     private JLabel message;
 
-    /**
-     * Create the panel.
-     */
     public LoginPanel() {
         setForeground(Color.YELLOW);
         setLayout(null);
@@ -33,15 +31,15 @@ public class LoginPanel extends JPanel {
         lblPassword.setBounds(12, 93, 113, 37);
         add(lblPassword);
 
-        username = new JFormattedTextField();
-        username.setFont(new Font("Ubuntu Mono", Font.PLAIN, 20));
-        username.setBounds(12, 44, 300, 37);
-        add(username);
+        usernameField = new JFormattedTextField();
+        usernameField.setFont(new Font("Ubuntu Mono", Font.PLAIN, 20));
+        usernameField.setBounds(12, 44, 300, 37);
+        add(usernameField);
 
-        password = new JPasswordField();
-        password.setFont(new Font("Ubuntu Mono", Font.PLAIN, 20));
-        password.setBounds(12, 130, 300, 37);
-        add(password);
+        passwordField = new JPasswordField();
+        passwordField.setFont(new Font("Ubuntu Mono", Font.PLAIN, 20));
+        passwordField.setBounds(12, 130, 300, 37);
+        add(passwordField);
 
         signIn = new JButton("Sign In");
         signIn.setFont(new Font("Ubuntu Mono", Font.BOLD, 18));
@@ -57,7 +55,7 @@ public class LoginPanel extends JPanel {
         signUp.setBounds(100, 440, 113, 37);
         add(signUp);
 
-        message = new JLabel("Message");
+        message = new JLabel("");
         message.setForeground(Color.LIGHT_GRAY);
         message.setHorizontalAlignment(SwingConstants.CENTER);
         message.setFont(new Font("Ubuntu Mono", Font.BOLD, 20));
@@ -72,5 +70,38 @@ public class LoginPanel extends JPanel {
             Main.frame.setContentPane(new RegisterPanel());
             Main.frame.setVisible(true);
         });
+
+        signIn.addActionListener(e -> {
+            if(isValidEntry().length() == 0){
+                String username = usernameField.getText();
+                String password = String.valueOf(passwordField.getPassword());
+                User user = Main.authenticate(username,password);
+                if(user != null){
+                    Main.frame.setTitle("Home");
+                    Main.frame.getContentPane().removeAll();
+                    Main.frame.setContentPane(new HomePage(user));
+                    Main.frame.setVisible(true);
+                }
+                else{
+                    message.setText("Incorrect Username or Password");
+                }
+            }
+            else {
+                message.setText("Invalid:"+isValidEntry());
+            }
+        });
+    }
+
+    public String isValidEntry(){
+        String username = usernameField.getText();
+        String password = String.valueOf(passwordField.getPassword());
+        String error = "";
+
+        if(!Pattern.matches("[a-zA-Z0-9]{4,16}",username))
+            error = " Username";
+        if (password.length()<8)
+            error += " Password";
+
+        return error;
     }
 }
